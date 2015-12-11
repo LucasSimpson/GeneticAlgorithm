@@ -49,5 +49,5 @@ class Netlist (object):
 		for i in range (len (layers) - 1):
 			layers [i].connect (layers [i + 1])
 
-		# return first layer for eval
-		return layers [0]
+		# return first layer for eval and the vm
+		return (layers [0], vm)
