@@ -1,26 +1,27 @@
 import numpy as np
 
-from nn.layers import FCLayer, ReshapeLayer
+from nn.layers import FCLayer, ReshapeLayer, SoftmaxLayer
 
 from nn.structure import AbstractLayer, Netlist
 
 
 
-in_ = np.ones ([1, 4])
+in_ = np.ones ([4, 4, 17])
 
 
-fc_1 = AbstractLayer (FCLayer, [1, 4], [1, 8])
-fc_2 = AbstractLayer (FCLayer, [1, 8], [1, 2])
+rs_1 = AbstractLayer (ReshapeLayer, [4, 4, 17], [1, 4 * 4 * 17])
+fc_1 = AbstractLayer (FCLayer, [1, 4 * 4 * 17], [1, 256])
+fc_2 = AbstractLayer (FCLayer, [1, 256], [1, 4])
+rs_2 = AbstractLayer (ReshapeLayer, [1, 4], [4])
+sftm = AbstractLayer (SoftmaxLayer, [4], [4])
 
 
-net = Netlist ([fc_1, fc_2])
+net = Netlist ([rs_1, fc_1, fc_2, rs_2, sftm])
 
 
-num_models = 10
-models = []
-for a in range (num_models):
-	models += [net.build_graph ()]
-	print models [a] [0].evaluate (in_)
+for a in range (10):
+	graph, vm = net.build_graph ()
+	print graph.evaluate (in_)
 
 # wrapper around VariableManager for genetic algorithm related operations
 class Genotype (object):
@@ -32,6 +33,10 @@ class Phenotype (object):
 	def __init__ (self, netlist, genotype):
 		self.netlist = netlist
 		self.genotype = genotype
+
+	@property
+	def genotype (self):
+		return self.genotype
 
 
 class GeneticAlgorithm (object):

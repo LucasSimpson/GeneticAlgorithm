@@ -17,7 +17,7 @@ class VariableManager (object):
 		self.indices += [(index_0, index_1)]
 
 		# create vars using gaussian distribution (mean=0, var=1)
-		new_vars = np.random.standard_normal ([amount])
+		new_vars = np.random.standard_normal ([amount]) / 10 # because wild answers were had without
 		self.variables = np.concatenate ((self.variables, new_vars), axis=0)
 
 		# return indices for retrieval

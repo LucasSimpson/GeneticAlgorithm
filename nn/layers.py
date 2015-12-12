@@ -67,7 +67,7 @@ class FCLayer (Layer):
 		self.vm.request_vars (self.input_shape [1] * self.output_shape [1])
 		self.vm.request_vars (self.output_shape [1])
 
-# layer that reshapes current flow
+# Reshapes input_shape into output_shape
 class ReshapeLayer (Layer):
 	def __init__ (self, input_shape, output_shape, vm):
 		super (ReshapeLayer, self).__init__ (input_shape, output_shape, vm)
@@ -79,6 +79,24 @@ class ReshapeLayer (Layer):
 	# reshape input shape to output shape
 	def eval (self, input_):
 		return input_.reshape (self.output_shape)
+
+	# no variables
+	def request_vars (self):
+		pass
+
+# runs inputs through the softmax function
+class SoftmaxLayer (Layer):
+	def __init__ (self, input_shape, output_shape, vm):
+		super (SoftmaxLayer, self).__init__ (input_shape, output_shape, vm)
+
+	# no variables needed
+	def init_variables (self):
+		pass
+
+	# run input_ through softmax function
+	def eval (self, input_):
+		e_x = np.exp (input_)
+		return e_x / np.sum (e_x)
 
 	# no variables
 	def request_vars (self):
