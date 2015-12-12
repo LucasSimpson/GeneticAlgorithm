@@ -56,7 +56,6 @@ class VariableManager (object):
 	def __len__ (self):
 		return len (self.variables)
 
-
 # wrapper class around variable manager to ease access of values
 class Variable (object):
 	def __init__ (self, indices, shape, vm):

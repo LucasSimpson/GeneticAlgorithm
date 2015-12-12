@@ -36,10 +36,10 @@ g, v = net.build_graph ()
 
 
 ga = GeneticAlgorithm (0.7, 0.01, 50, net, PhenotypeXOR)
-ga.evaluate ()
+ga.stats ()
 
 for a in range (100):
 	ga.generation ()
 
-ga.evaluate ()
+ga.stats ()
 

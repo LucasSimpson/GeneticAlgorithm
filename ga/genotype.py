@@ -1,8 +1,5 @@
 import random
-
 import numpy as np
-
-
 
 # wrapper around VariableManager for genetic algorithm related operations
 class Genotype (object):

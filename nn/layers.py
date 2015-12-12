@@ -41,7 +41,6 @@ class Layer (object):
 	def request_vars (self):
 		raise NotImplemented ()
 
-
 # fully connected layer
 class FCLayer (Layer):
 	def __init__ (self, input_shape, output_shape, vm):
@@ -101,7 +100,6 @@ class SoftmaxLayer (Layer):
 	# no variables
 	def request_vars (self):
 		pass
-
 
 # returns id of maximum arguement. shortcut layer because this is used a lot
 class ArgmaxLayer (Layer):

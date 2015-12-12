@@ -1,9 +1,7 @@
 import random
-
 import numpy as np
 
 from genotype import Genotype
-
 
 class GeneticAlgorithm (object):
 	def __init__ (self, crossover_rate, mutation_rate, pop_size, netlist, phenotype_class):
@@ -72,25 +70,33 @@ class GeneticAlgorithm (object):
 			# create copy of each genotype
 			new_pair = [p.genotype.deep_copy () for p in pair]
 
+			# crossover genes with probability self.crossover_rate
 			u = random.random ()
 			if u < self.crossover_rate:
 				new_pair [0].crossover (new_pair [1])
 
+			# add new_pair to new_genotypes
 			new_genotypes += new_pair
 
-
+		# new phenotypes to return
 		new_phenotypes = []
 
+		# iterate over genotypes
 		for genotype in new_genotypes:
+			# mutate genotype
 			genotype.mutate (self.mutation_rate)
 
+			# build graph with new genotype
 			graph, vm = self.netlist.build_graph (genotype.vm)
+
+			# create new phenotype from new genotype and graph
 			new_phenotypes += [self.phenotype_class (graph, genotype)]
 
-
+		# return new phenotypes
 		return new_phenotypes
 
-	def evaluate (self):
+	# show some statistics about current generation
+	def stats (self):
 		scores = np.array ([p.evaluate () for p in self.phenotypes])
 		print 'Generation #', self.generation_num
 		print 'Highest:  ', scores [np.argmax (scores)]
