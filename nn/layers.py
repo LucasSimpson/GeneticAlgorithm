@@ -114,13 +114,7 @@ class ArgmaxLayer (Layer):
 
 	# spit out index of maximum argument. Expects 1 dimensional vector as input
 	def eval (self, input_):
-		max_, id_ = input_ [0], 0
-		for i in range (1, len (input_)):
-			if input_ [i] > max_:
-				id_ = i 
-				max_ = input_ [i]
-		return np.array ([id_])
-
+		return np.array ([np.argmax (input_)])
 
 	# no variables
 	def request_vars (self):
