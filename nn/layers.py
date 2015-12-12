@@ -101,3 +101,27 @@ class SoftmaxLayer (Layer):
 	# no variables
 	def request_vars (self):
 		pass
+
+
+# returns id of maximum arguement. shortcut layer because this is used a lot
+class ArgmaxLayer (Layer):
+	def __init__ (self, input_shape, output_shape, vm):
+		super (ArgmaxLayer, self).__init__ (input_shape, output_shape, vm)
+
+	# no variables needed
+	def init_variables (self):
+		pass
+
+	# spit out index of maximum argument. Expects 1 dimensional vector as input
+	def eval (self, input_):
+		max_, id_ = input_ [0], 0
+		for i in range (1, len (input_)):
+			if input_ [i] > max_:
+				id_ = i 
+				max_ = input_ [i]
+		return np.array ([id_])
+
+
+	# no variables
+	def request_vars (self):
+		pass

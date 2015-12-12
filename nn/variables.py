@@ -17,7 +17,7 @@ class VariableManager (object):
 		self.indices += [(index_0, index_1)]
 
 		# create vars using gaussian distribution (mean=0, var=1)
-		new_vars = np.random.standard_normal ([amount]) / 10 # because wild answers were had without
+		new_vars = np.random.standard_normal ([amount])
 		self.variables = np.concatenate ((self.variables, new_vars), axis=0)
 
 		# return indices for retrieval
@@ -26,6 +26,13 @@ class VariableManager (object):
 	# returns values inbetween indices
 	def get_vars (self, indices):
 		return self.variables [indices [0]: indices [1]]
+
+	# creates a deep copy of self
+	def deep_copy (self):
+		vm = VariableManager ()
+		vm.variables = np.copy (self.variables)
+		vm.indices = self.indices [:]
+		return vm
 
 	# iter over indices
 	def __iter__ (self):
@@ -44,6 +51,10 @@ class VariableManager (object):
 	# wrapper function for better readability
 	def pop_indices (self):
 		return self.next ()
+
+	# returns number of variables
+	def __len__ (self):
+		return len (self.variables)
 
 
 # wrapper class around variable manager to ease access of values
