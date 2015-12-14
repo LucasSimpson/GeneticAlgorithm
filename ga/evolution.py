@@ -51,8 +51,10 @@ class GeneticAlgorithm (object):
 		pairs = []
 		for i in range (self.pop_size / 2):
 			# generate two random nums
-			id_a = weighted_pick (regions)
-			id_b = weighted_pick (regions)
+			id_a, id_b = -1, -1
+			while (id_a == id_b):
+				id_a = weighted_pick (regions)
+				id_b = weighted_pick (regions)
 
 			# add to list of pairs
 			pairs += [(self.phenotypes [id_a], self.phenotypes [id_b])]
@@ -94,6 +96,11 @@ class GeneticAlgorithm (object):
 
 		# return new phenotypes
 		return new_phenotypes
+
+	# returns the top phenotype of the generation
+	def get_best (self):
+		scores = np.array ([p.evaluate () for p in self.phenotypes])
+		return self.phenotypes  [np.argmax (scores)]
 
 	# show some statistics about current generation
 	def stats (self):

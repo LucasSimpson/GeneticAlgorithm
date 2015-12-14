@@ -24,9 +24,9 @@ class Genotype (object):
 
 	# mutate each var with probability U
 	def mutate (self, U):
-		for v in self.vm.variables:
+		for i in range (len (self.vm.variables)):
 			if random.random () <= U:
-				v = random.normalvariate (0, 1)
+				self.vm.variables [i] = random.normalvariate (0, 1) # mean=0, var=1
 
 	# creates a deep copy
 	def deep_copy (self):
@@ -35,3 +35,6 @@ class Genotype (object):
 	# returns length of genotype
 	def __len__ (self):
 		return len (self.vm)
+
+	def __str__ (self):
+		return str (self.vm)

@@ -41,10 +41,23 @@ class Layer (object):
 	def request_vars (self):
 		raise NotImplemented ()
 
+# base layer class for layers that have no need of variables
+class NoVariablesLayer (Layer):
+	def __init__ (self, *args, **kwargs):
+		super (NoVariablesLayer, self).__init__ (*args, **kwargs)
+
+	# no variables needed
+	def init_variables (self):
+		pass
+
+	# no variables
+	def request_vars (self):
+		pass
+
 # fully connected layer
 class FCLayer (Layer):
-	def __init__ (self, input_shape, output_shape, vm):
-		super (FCLayer, self).__init__ (input_shape, output_shape, vm)
+	def __init__ (self, *args, **kwargs):
+		super (FCLayer, self).__init__ (*args, **kwargs)
 
 		self.weights = None
 		self.bias = None
@@ -66,54 +79,28 @@ class FCLayer (Layer):
 		self.vm.request_vars (self.input_shape [1] * self.output_shape [1])
 		self.vm.request_vars (self.output_shape [1])
 
+
 # Reshapes input_shape into output_shape
-class ReshapeLayer (Layer):
-	def __init__ (self, input_shape, output_shape, vm):
-		super (ReshapeLayer, self).__init__ (input_shape, output_shape, vm)
-
-	# no variables needed
-	def init_variables (self):
-		pass
-
+class ReshapeLayer (NoVariablesLayer):
 	# reshape input shape to output shape
 	def eval (self, input_):
 		return input_.reshape (self.output_shape)
 
-	# no variables
-	def request_vars (self):
-		pass
-
 # runs inputs through the softmax function
-class SoftmaxLayer (Layer):
-	def __init__ (self, input_shape, output_shape, vm):
-		super (SoftmaxLayer, self).__init__ (input_shape, output_shape, vm)
-
-	# no variables needed
-	def init_variables (self):
-		pass
-
+class SoftmaxLayer (NoVariablesLayer):
 	# run input_ through softmax function
 	def eval (self, input_):
 		e_x = np.exp (input_)
 		return e_x / np.sum (e_x)
 
-	# no variables
-	def request_vars (self):
-		pass
-
 # returns id of maximum arguement. shortcut layer because this is used a lot
-class ArgmaxLayer (Layer):
-	def __init__ (self, input_shape, output_shape, vm):
-		super (ArgmaxLayer, self).__init__ (input_shape, output_shape, vm)
-
-	# no variables needed
-	def init_variables (self):
-		pass
-
+class ArgmaxLayer (NoVariablesLayer):
 	# spit out index of maximum argument. Expects 1 dimensional vector as input
 	def eval (self, input_):
 		return np.array ([np.argmax (input_)])
 
-	# no variables
-	def request_vars (self):
-		pass
+# applies logistic function on all elements
+class LogisticLayer (NoVariablesLayer):
+	def eval (self, input_):
+		return 1.0 / (1.0 + np.exp (-input_))
+
